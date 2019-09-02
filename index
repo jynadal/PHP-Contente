@@ -1,0 +1,99 @@
+//First BDD_Connection:
+<?php 
+
+
+	$pdo = new PDO
+	(
+		'mysql:host=localhost;dbname=e_com;charset=UTF8',
+		'root',
+		'troiswa'
+
+			);
+
+//In other pages:
+<?php 
+
+  include 'application/bdd_connection.php';
+  ?>
+  
+  // For including files
+   <?php include('header.php'); ?>
+   
+   //For MySQL query
+   <?php 
+
+                       $query =
+                      '
+                        SELECT
+                          Id,
+                          Titre
+                        FROM  
+                          Categories
+                      ';
+
+
+                      $resultSet = $pdo->query($query);
+                      $slids = $resultSet->fetchAll();
+
+                       ?>
+          //And  the foreache loop
+          
+          <?php foreach($slids as $slid): ?>
+                                     <li><a href="#" data-option-value=".zack<?= $slid['Id'] ?>"><?= $slid['Titre'] ?></a></li>
+
+                             <?php endforeach; ?>   
+                             
+                             
+     //An another loop for a liste     
+     
+            <?php 
+
+                       $query =
+                      '
+                        SELECT
+                          Id,
+                          Titre,
+                          Description,
+                          Image,
+                          Prix,
+                          Cat_Id
+                        FROM  
+                          Produit
+                        
+                      ';
+
+
+                      $resultSet = $pdo->query($query);
+                      $prods = $resultSet->fetchAll();
+
+
+
+                       ?>
+  <div id="isotope" class="isotope">
+                        <?php foreach($prods as $prod): ?>
+                            <div class="isotope-item zack<?= $prod['Cat_Id'] ?>">
+                                <div class="product-item">
+                                    <div class="item-thumb">
+                                        
+                                        <img src="<?= $prod['Image'] ?>" class="img-responsive" alt="" />
+                                        <div class="overlay-rmore fa fa-search quickview" data-toggle="modal" data-target="#myModal"></div>
+                                        
+                                    </div>
+                                    <div class="product-info">
+                                        <h4 class="product-title"><a href="./products.php?id=<?= $prod['Id'] ?>"><?= substr($prod['Titre'],0,20); ?>...</a></h4>
+                                        <span class="product-price"><?= $prod['Prix'] ?>€</span>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        
+       //Footer include
+         <?php include('footer.php'); ?>
+                        
+                      
+                 
+  
+              
+
